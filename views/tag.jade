@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  div.content-header
+    h2= tag.sub_title
+  div.content-body
+    div.article-list
+      - for (tag in posts.tag) {
+          h4.article-list #{tag}(#{posts.tag[tag].length})
+      -   if (posts.tag.hasOwnProperty(tag)) {
+              ul
+      -       each article in posts.tag[tag]
+                li
+                  a(href='/p/' + article.path)= article.title
+      -   }
+      - }

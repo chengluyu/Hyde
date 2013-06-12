@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  div.content-header
+    h2= general.title
+  div.content-body
+    - var max_show = Math.min(posts.list.length, home.max_preview);
+    - for (var k = 0; k < max_show; ++k) {
+    -   var article = posts.list[k];
+        div.article-preview
+          h3
+            a(href='/p/' + article.path)= article.title
+          div.article-preview-content !{article.preview}
+          div.article-preview-footer
+            span.ink-label.info= article.date
+    - }
+    - if (posts.list.length > max_show)
+      button.ink-button
+        a(href='/archive')= home.more_button_text

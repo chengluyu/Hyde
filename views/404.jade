@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  div.content-header
+    h2= error.sub_title
+  div.content-body
+    p= error.info_text 
+    a(href='/')= error.back_to_home_text

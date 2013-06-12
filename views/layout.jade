@@ -1,0 +1,38 @@
+doctype 5
+html
+  head
+    title= general.title
+    link(rel='stylesheet', href='/css/ink.css')
+    | <!--[if lte IE 9 ]>
+    script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
+    | <![endif]--> 
+    | <!--[if lte IE 7 ]>
+    link(rel='stylesheet', href='/css/ink-ie7.css')
+    | <![endif]--> 
+    link(rel='stylesheet', href='http://fonts.googleapis.com/css?family=PT+Sans')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    nav.ink-navigation
+      ul.menu.horizontal.rounded.shadowed.blue
+        div.container
+          li
+            a(href='/')= home.sub_title
+          li
+            a(href='/archive')= archive.sub_title
+          li
+            a(href='/category')= category.sub_title
+          li
+            a(href='/tag')= tag.sub_title
+          li
+            a(href='/about')= about.sub_title
+    div.container.content
+      block content
+      include comment
+    footer.container#footer-bar
+      p #{other.footer_text} 
+        | | Powered by 
+        a(href='nodejs.org') Node.js
+        | , 
+        a(href='expressjs.com', target='_blank') Express
+        |  and 
+        a(href='ink.sapo.pt', target='_blank') InK

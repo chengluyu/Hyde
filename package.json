@@ -1,0 +1,21 @@
+{
+  "name": "Hyde",
+  "version": "0.1.4",
+  "author": "Cheng Luyu (chengluyu@live.cn)",
+  "description": "A static blog system",
+  "contributors": [
+    {
+      "name": "Cheng Luyu",
+      "email": "chengluyu@live.cn"
+    }
+  ],
+  "scripts": {
+    "start": "node server.js"
+  },
+  "main": "./server.js",
+  "dependencies": {
+    "jade": "*",
+    "express": "3.1.0",
+    "markdown-js": "*"
+  }
+}
