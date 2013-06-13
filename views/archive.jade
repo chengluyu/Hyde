@@ -8,6 +8,6 @@ block content
       div.article-preview
         h3
           a(href='/p/' + article.path, target='_blank')= article.title
-        div.article-preview-content !{article.preview}
-        div.article-preview-footer
-          span.ink-label.info= article.date
+          span
+            small.pull-right= article.date
+        div.article-preview-content !{article.summary}

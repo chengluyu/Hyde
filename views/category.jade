@@ -6,12 +6,12 @@ block content
   div.content-body
     div.article-list
       - for (ctg in posts.category) {
-          h4.article-list #{ctg}(#{posts.category[ctg].length})
-      -   if (posts.category.hasOwnProperty(ctg)) {
+          h4(id=ctg) #{ctg}(#{posts.category[ctg].length})
+        - if (posts.category.hasOwnProperty(ctg)) {
               ul
-      -       each article in posts.category[ctg]
+              - each article in posts.category[ctg]
                 li
                   a(href='/p/' + article.path)= article.title
-      -   }
+        - }
       - }
       

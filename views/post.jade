@@ -3,22 +3,29 @@ extends layout
 block content
   div.content-header
     h2= article.title
-  div.content-body
+  div
     div.column-group
-      div.large-80
+      div.large-75.content-body
         !{article.preview}
         !{article.content}
-      div.large-20
+      div.large-25.sidebar
         div.sidebar-block
           h6= other.date_text
           span.ink-label.info= article.date
+        div.sidebar-block
           h6= other.time_text
           span.ink-label.info= article.time
         div.sidebar-block
           h6= tag.sub_title
-          - each tag in article.tag
-            span.ink-label.success= tag 
+          ul
+            - each tag in article.tag
+              li
+                span.ink-label.success
+                  a(href='/tag#' + tag)= tag
         div.sidebar-block
           h6= category.sub_title
-          - each ctg in article.category
-            span.ink-label.warning= ctg
+          ul
+            - each ctg in article.category
+              li
+                span.ink-label.warning
+                  a(href='/category#' + ctg)= ctg

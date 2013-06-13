@@ -6,11 +6,11 @@ block content
   div.content-body
     div.article-list
       - for (tag in posts.tag) {
-          h4.article-list #{tag}(#{posts.tag[tag].length})
-      -   if (posts.tag.hasOwnProperty(tag)) {
+          h4(id=tag) #{tag}(#{posts.tag[tag].length})
+        - if (posts.tag.hasOwnProperty(tag)) {
               ul
-      -       each article in posts.tag[tag]
+              - each article in posts.tag[tag]
                 li
                   a(href='/p/' + article.path)= article.title
-      -   }
+        - }
       - }

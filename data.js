@@ -1,5 +1,6 @@
 var fs = require('fs'),
-  markdown = require('markdown-js');
+  markdown = require('markdown-js'),
+  untitled_counter = 1;
 
 Array.prototype.each = function (callback) {
   for (var k = 0; k < this.length; ++k)
@@ -47,13 +48,15 @@ var post = function (file_name, encoding) {
     }
   }
 
-  this.title = info['title'] || 'Untitled Post';
+  var preview_text = scan.scan_until('{{more}}');
+
+  this.title = info['title'] || 'Untitled Post ' + untitled_counter.toString();
   this.category = info['category'] ? info['category'].split(',') : ['Uncategorized'];
   this.tag = info['tag'] ? info['tag'].split(',') : ['Untagged'];
   this.date_obj = info['date'] ? new Date(info['date']) : new Date;
   this.date = this.date_obj.toLocaleDateString()
   this.time = this.date_obj.toLocaleTimeString();
-  this.summary = info['summary'] || '';
+  this.summary = info['summary'] || preview_text.substring(0, 100) + '...';
   if (info['path']) {
     this.path = info['path'];
   } else if (info['title']) {
@@ -66,7 +69,7 @@ var post = function (file_name, encoding) {
   }
   this.path = this.path.toLowerCase();
 
-  this.preview = markdown.encode(scan.scan_until('{{more}}'))
+  this.preview = markdown.encode(preview_text);
   this.content = markdown.encode(scan.scan_all());
 };
 
