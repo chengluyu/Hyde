@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  div.content-header
+    h2= category.sub_title
+  div.content-body
+    div.article-list
+      - for (ctg in posts.categories) {
+          h4(id=ctg) #{ctg}(#{posts.categories[ctg].length})
+        - if (posts.categories.hasOwnProperty(ctg)) {
+              ul
+              - each article in posts.categories[ctg]
+                li
+                  a(href='/p/' + article.path)= article.title
+        - }
+      - }
+      
