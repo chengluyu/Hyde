@@ -1,18 +1,14 @@
+var express = require('express'),
+    http = require('http'),
+    path = require('path');
 
-/**
- * Module dependencies.
- */
-
-var express = require('express')
-  , data = require('./data')
-  , http = require('http')
-  , path = require('path')
-  , config = require('./config.json');
+var data = require('./data'),
+    config = require('./config.json');
 
 var app = express();
 
 app.configure(function(){
-  app.set('port', process.env.PORT || 3000);
+  app.set('port', process.env.PORT || 8000);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.use(express.favicon());
@@ -20,7 +16,7 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(app.router);
-  app.use(express.static(path.join(__dirname, 'public')));
+  app.use(express.static(path.join(__dirname, 'static')));
 });
 
 app.configure('development', function(){
@@ -30,12 +26,14 @@ app.configure('development', function(){
 app.locals(config);
 
 app.get('/', data.index);
-app.get('/archive', data.archive);
-app.get('/category', data.category);
-app.get('/tag', data.tag);
+app.get('/archives', data.archives);
+app.get('/categories', data.categories);
+app.get('/tags', data.tags);
 app.get('/about', data.about);
 app.get('/p/:post', data.post);
+app.get('/c/:category', data.category);
+app.get('/t/:tag', data.tag);
 
 http.createServer(app).listen(app.get('port'), function(){
-  console.log("Express server listening on port " + app.get('port'));
+  console.log("Hyde is listening on port " + app.get('port'));
 });
