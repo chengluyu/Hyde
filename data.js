@@ -1,14 +1,15 @@
 var fs = require('fs'),
-  markdown = require('markdown-js'),
-  untitled_counter = 1;
+    markdown = require('markdown-js');
+
+var untitledCnt = 1, folder = './post/';
 
 Array.prototype.each = function (callback) {
-  for (var k = 0; k < this.length; ++k)
-    callback(this[k]);
+  for (var i = 0; i < this.length; i ++)
+    callback(this[i]);
 };
 
-var scanner = function (file_name, encoding) {
-  this.content = fs.readFileSync(file_name, encoding || 'utf8'),
+var scanner = function (filename, encode) {
+  this.content = fs.readFileSync(folder + filename, encode || 'utf8'),
   this.at = 0;
 };
 
@@ -16,10 +17,10 @@ scanner.prototype = {
   eof: function () {
     return this.at >= this.content.length;
   },
-  scan_line: function () {
-    return this.scan_until('\n');
+  scanLine: function () {
+    return this.scanUntil('\n');
   },
-  scan_until: function (str) {
+  scanUntil: function (str) {
     if (this.eof())
       return '';
     var pos = this.content.indexOf(str, this.at), sub;
@@ -29,98 +30,95 @@ scanner.prototype = {
     this.at = pos + str.length;
     return sub;
   },
-  scan_all: function () {
+  scanAll: function () {
     return this.content.substring(this.at);
   }
 };
 
-var post = function (file_name, encoding) {
-  var scan = new scanner(file_name, encoding);
-  var line, match_result, info = {};
+var post = function (filename, encode) {
+  var scan = new scanner(filename, encode);
+  var line, matchResult, info = {};
 
-  while ((line = scan.scan_line()) != false) {
+  while ((line = scan.scanLine())) {
     if (line.length === 1) console.log(line.charCodeAt(0));
-    match_result = line.match(/([\w]+)\:\s*(.+)/);
-    if (match_result === null) {
-      continue;
-    } else {
-      info[match_result[1].toLowerCase()] = match_result[2];
-    }
+    matchResult = line.match(/([\w]+)\:\s*(.+)/);
+    if (matchResult) 
+      info[matchResult[1].toLowerCase()] = matchResult[2];
   }
 
-  var preview_text = scan.scan_until('{{more}}');
+  var preview = scan.scanUntil('{{more}}');
 
-  this.title = info['title'] || 'Untitled Post ' + untitled_counter.toString();
-  this.category = info['category'] ? info['category'].split(',') : ['Uncategorized'];
-  this.tag = info['tag'] ? info['tag'].split(',') : ['Untagged'];
-  this.date_obj = info['date'] ? new Date(info['date']) : new Date;
-  this.date = this.date_obj.toLocaleDateString()
-  this.time = this.date_obj.toLocaleTimeString();
-  this.summary = info['summary'] || preview_text.substring(0, 100) + '...';
-  if (info['path']) {
+  if (info['title'])
+    this.title = info['title'];
+  else {
+    this.title = 'Untitled Post' + untitledCnt;
+    untitledCnt ++;
+  }
+
+  if (info['path'])
     this.path = info['path'];
-  } else if (info['title']) {
+  else if (info['title'])
     this.path = info['title'].replace(/[^\w_-]+/g, '-');
-  } else {
-    var pos1 = file_name.lastIndexOf('\\'), pos2 = file_name.lastIndexOf('/');
-    var pos = pos1 > pos2 ? pos1 : pos2;
-    pos = pos === -1 ? pos : 0;
-    this.path = file_name.substring(pos);
-  }
-  this.path = this.path.toLowerCase();
+  else 
+    this.path = 'files/' + filename;
 
-  this.preview = markdown.encode(preview_text);
-  this.content = markdown.encode(scan.scan_all());
+  this.dateObj = info['date'] ? new Date(info['date']) : new Date;
+  this.date = this.dateObj.toLocaleDateString()
+  this.time = this.dateObj.toLocaleTimeString();
+  this.category = info['category'] ? info['category'].split(',') : ['Uncategorized'];
+  this.tag = info['tag'].split(',');
+  this.summary = info['summary'];
+  this.path = this.path.toLowerCase();
+  this.preview = markdown.encode(preview);
+  this.content = markdown.encode(scan.scanAll());
 };
 
-var postList = function (folder) {
-  var file_list = fs.readdirSync(folder), p;
+var postList = function () {
+  var fileList = fs.readdirSync(folder);
+  var list = [], path = {}, categories = {}, tags = {};
 
-  var list = [], path = {}, category = {}, tag = {};
-
-  file_list.each(function (file_name) {
-    if (file_name.lastIndexOf('.md') !== file_name.length - 3)
-      return;
-    p = new post(folder + file_name);
+  fileList.each(function(filename){
+    if (filename.lastIndexOf('.md') !== filename.length - 3) return;
+    var p = new post(filename);
     list.push(p);
     path[p.path] = p;
-    p.category.each(function (c) {
-      if (!category[c])
-        category[c] = [];
-      category[c].push(p);
+    p.category.each(function(c){
+      if (!categories[c])
+        categories[c] = [];
+      categories[c].push(p);
     });
-    p.tag.each(function (t) {
-      if (!tag[t])
-        tag[t] = [];
-      tag[t].push(p);
+    p.tag.each(function(t){
+      if (!tags[t])
+        tags[t] = [];
+      tags[t].push(p);
     })
   });
 
   this.list = list;
   this.path = path;
-  this.category = category;
-  this.tag = tag;
+  this.categories = categories;
+  this.tags = tags;
 };
 
-var all_post = new postList('./post/');
-all_post.list.sort(function (a, b) {
-  return a.date_obj < b.date_obj;
+var Posts = new postList();
+Posts.list.sort(function(lhs, rhs){
+  lhs.dateObj < rhs.dateObj;
 });
 
 exports.index = function (req, res) {
-  res.render('index', {  posts: all_post });
+  res.render('index', {  posts: Posts });
 };
 
-exports.archive = function (req, res) {
-  res.render('archive', {  posts: all_post });
+exports.archives = function (req, res) {
+  res.render('archives', {  posts: Posts });
 };
 
-exports.category = function (req, res) {
-  res.render('category', { posts: all_post });
+exports.categories = function (req, res) {
+  res.render('categories', { posts: Posts });
 };
 
-exports.tag = function (req, res) {
-  res.render('tag', { posts: all_post });
+exports.tags = function (req, res) {
+  res.render('tags', { posts: Posts });
 };
 
 exports.about = function (req, res) {
@@ -129,9 +127,24 @@ exports.about = function (req, res) {
 
 exports.post = function (req, res) {
   var post = req.params['post'].toLowerCase();
-  if (all_post.path[post]) {
-    res.render('post', { article: all_post.path[post] });
-  } else {
-    res.render('404', { 'post': post });
-  }
+  if (Posts.path[post])
+    res.render('post', { article: Posts.path[post] });
+  else
+    res.render('404');
+};
+
+exports.category = function (req, res) {
+  var name = req.params['category'];
+  if (Posts.categories[name])
+    res.render('category', { articles: Posts.categories[name], title: name });
+  else
+    res.render('404');
+};
+
+exports.tag = function (req, res) {
+  var name = req.params['tag'];
+  if (Posts.tags[name])
+    res.render('tag', { articles: Posts.tags[name], title: name });
+  else
+    res.render('404');
 };
