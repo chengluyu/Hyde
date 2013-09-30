@@ -1,0 +1,26 @@
+{
+  "title": "untitled",
+  "description": "no description",
+  "preview_html": "<p>No preview.</p>",
+  "abbr_path": "untitled",
+  "drafts": true,
+  "tags": [
+    "untagged"
+  ],
+  "categories": [
+    "uncategorized"
+  ],
+  "versions": [
+    {
+      "date_time": "2013-1-1 00:00:00",
+      "remark": "create this document"
+    }
+  ],
+  "authors": [
+    {
+      "name": "Author Name",
+      "email": "author@example.com",
+      "remark": "the only author"
+    }
+  ]
+}
