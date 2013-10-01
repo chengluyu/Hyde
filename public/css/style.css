@@ -1,7 +1,6 @@
 body {
   margin: 0px;
   font-size: 15px;
-  font-family: 'PT Sans', 'Microsoft YaHei', 'Segoe UI', sans-serif;
   background: url('/img/background-dot.png') 2px 2px repeat;
 }
 
@@ -60,7 +59,11 @@ pre, code {
 
 .article-list > h4 {
   margin-top: 10px;
-  margin-bottom: -10px;
+  margin-bottom: -5px;
+}
+
+.article-list > li {
+  margin-left: 20px;
 }
 
 .sidebar {

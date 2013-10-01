@@ -2,6 +2,6 @@ extends layout
 
 block content
   div.content-header
-    h2= about.sub_title
+    h2= language.about.name
   div.content-body
-    p= about.text
+    p !{data}

@@ -1,0 +1,16 @@
+{
+  "title": "libgit description",
+  "drafts": false,
+  "abbr_path": "libgit",
+  "versions": [
+    {
+      "date_time": "2013-10-1 18:12",
+      "remark": "for test"
+    }
+  ],
+  "authors": [
+    {
+      "name": "libgit"
+    }
+  ]
+}

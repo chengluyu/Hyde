@@ -1,0 +1,18 @@
+{
+  "blog_title": "hyde",
+  "blog_name": "hyde",
+
+  "base_title": "hyde",
+
+  "index": {
+    "max_preview": 5
+  },
+
+  "about": {
+    "file_path": "./about.html"
+  },
+
+  "page_not_found": {
+    "file_path": "./page_not_found.html"
+  }
+}

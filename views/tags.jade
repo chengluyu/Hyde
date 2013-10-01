@@ -2,15 +2,16 @@ extends layout
 
 block content
   div.content-header
-    h2= tag.sub_title
+    h2= language.tags.name
   div.content-body
     div.article-list
-      - for (tag in posts.tags) {
-          h4(id=tag) #{tag}(#{posts.tags[tag].length})
-        - if (posts.tags.hasOwnProperty(tag)) {
-              ul
-              - each article in posts.tags[tag]
-                li
-                  a(href='/p/' + article.path)= article.title
+      - for (tag in data) {
+        - if (data.hasOwnProperty(tag)) {
+            h4(id=tag) #{tag}(#{data[tag].length})
+            ul
+            - each article in data[tag]
+              li
+                a(href='/p/' + article.abbr_path)= article.title
         - }
       - }
+      

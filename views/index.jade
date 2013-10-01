@@ -2,18 +2,18 @@ extends layout
 
 block content
   div.content-header
-    h2= general.title
+    h2= base_title
   div.content-body
-    - var max_show = Math.min(posts.list.length, home.max_preview);
+    - var max_show = Math.min(data.length, index.max_preview);
     - for (var k = 0; k < max_show; ++k) {
-    -   var article = posts.list[k];
+    -   var post = data[k];
         div.article-preview
           h3
-            a(href='/p/' + article.path)= article.title
-          div.article-preview-content !{article.preview}
+            a(href='/p/' + post.abbr_path)= post.title
+          div.article-preview-content !{post.preview_html}
           div.article-preview-footer
-            span.ink-label.info= article.date
+            span.ink-label.info= post.last_date_str
     - }
-    - if (posts.list.length > max_show)
+    - if (data.length > max_show)
       button.ink-button
-        a(href='/archive')= home.more_button_text
+        a(href='/archive')= language.other.more_button_text

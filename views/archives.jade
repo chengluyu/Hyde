@@ -2,12 +2,12 @@ extends layout
 
 block content
   div.content-header
-    h2= archive.sub_title
+    h2= language.archives.name
   div.content-body
-    - each article in posts.list
+    - each post in data
       div.article-preview
         h3
-          a(href='/p/' + article.path, target='_blank')= article.title
+          a(href='/p/' + post.abbr_path, target='_blank')= post.title
           span
-            small.pull-right= article.date
-        div.article-preview-content !{article.summary}
+            small.pull-right= post.last_date_str
+        div.article-preview-content !{post.summary}
