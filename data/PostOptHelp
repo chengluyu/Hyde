@@ -1,0 +1,13 @@
+Help of 'hyde post'
+
+  Update post:
+    hyde post update [file_name (regular expression also ok)]
+    hyde post update all
+
+  Remove post (file will be deleted, if this is not you want, please use draft):
+    hyde post delete [file_name (regular expression also ok)]
+    hyde post delete all
+
+  View post informations:
+    hyde post info [file_name (regular expression also ok)]
+    hyde post info all

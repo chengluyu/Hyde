@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  div.content-header
+    h2= language.archives.name
+  div.content-body
+    - each post in data
+      div.article-preview
+        h3
+          a(href='/post/' + post.abbr_path, target='_blank')= post.title
+          span
+            small.pull-right= post.last_date_str
+        div.article-preview-content !{post.summary}

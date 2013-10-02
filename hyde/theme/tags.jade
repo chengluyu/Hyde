@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  div.content-header
+    h2= language.tags.name
+  div.content-body
+    div.article-list
+      - for (tag in data) {
+        - if (data.hasOwnProperty(tag)) {
+            h4(id=tag) #{tag}(#{data[tag].length})
+            ul
+            - each article in data[tag]
+              li
+                a(href='/post/' + article.abbr_path)= article.title
+        - }
+      - }
+      

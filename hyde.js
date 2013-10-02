@@ -1,19 +1,34 @@
 var argv = process.argv;
 var fs = require('fs');
 var path = require('path');
+var post_opt_handler = require(path.join(__dirname, 'opts')).handler;
 
-if (argv[2] === 'serve') {
 
-  require(path.join(__dirname, 'app.js'));
+// add handlers for argv here
+var argv_handler = {
+  'serve': function () {
+    require(path.join(__dirname, 'hyde', 'app.js'));
+  },
 
-} else if (argv[2] === 'generate') {
+  'generate': function () {
+    console.log('Unimplement function.');
+  },
 
-  console.log('Unimplement function.');
+  'post': function () {
+    post_opt_handler(argv);
+  },
 
+  'help': function () {
+    var help_content = fs.readFileSync(path.join(__dirname, 'data', 'Help'), 'utf8');
+    console.log(help_content);
+  }
+};
+
+
+
+if (typeof argv[2] === 'string' &&
+    typeof argv_handler[argv[2]] === 'function') {
+  argv_handler[argv[2]]();
 } else {
-
-  var help_content = fs.readFileSync(path.join(__dirname, 'Help'), 'utf8');
-
-  console.log(help_content);
-
+  argv_handler['help']();
 }

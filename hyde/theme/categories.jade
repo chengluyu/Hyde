@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  div.content-header
+    h2= language.categories.name
+  div.content-body
+    div.article-list
+      - for (category in data) {
+        - if (data.hasOwnProperty(category)) {
+            h4(id=category) #{category}(#{data[category].length})
+            ul
+            - each article in data[category]
+              li
+                a(href='/post/' + article.abbr_path)= article.title
+        - }
+      - }
+      

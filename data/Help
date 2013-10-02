@@ -1,0 +1,6 @@
+
+  Help
+
+    hyde serve [port=3000] : Run the hyde server at given port.
+    hyde generate [target] : Generate static HTML pages (unimplement now).
+    hyde help              : Show the text that you read now.

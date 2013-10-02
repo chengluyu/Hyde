@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  div.content-header
+    h2= info.title
+  div
+    div.column-group
+      div.large-75.content-body
+        !{data}
+      div.large-25.sidebar
+        div.sidebar-block
+          h6= language.other.date
+          span.ink-label.info= info.last_date_str
+        div.sidebar-block
+          h6= language.other.time
+          span.ink-label.info= info.last_time_str
+        div.sidebar-block
+          h6= language.tags.name
+          ul
+            - each tag in info.tags
+              li
+                span.ink-label.success
+                  a(href='/tags#' + tag)= tag
+        div.sidebar-block
+          h6= language.categories.name
+          ul
+            - each category in info.categories
+              li
+                span.ink-label.warning
+                  a(href='/categories#' + category)= category
